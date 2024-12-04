@@ -23,5 +23,16 @@ create table dbo.[User]
     Sex    char(2),
     Age    int       not null
 )
-/*
+/*创建表Flight并设置逐渐*/
+create table dbo.Flight
+(
+    Fid   char(20)  not null
+        constraint Flight_pk_Fid
+            primary key,
+    Lea_t datetime  not null,
+    Arr_t datetime  not null,
+    Lea_p nchar(20) not null,
+    Arr_p nchar(20) not null,
+    Cid   nchar(20) not null
+)
    
