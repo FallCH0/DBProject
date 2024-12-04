@@ -23,7 +23,7 @@ create table dbo.[User]
     Sex    char(2),
     Age    int       not null
 )
-/*创建表Flight并设置逐渐*/
+/*创建表Flight并设置主键*/
 create table dbo.Flight
 (
     Fid   char(20)  not null
@@ -35,4 +35,12 @@ create table dbo.Flight
     Arr_p nchar(20) not null,
     Cid   nchar(20) not null
 )
-   
+/*创建表Ticket并设置主键*/
+create table dbo.Company
+(
+    Cid      char(20)  not null
+        constraint Company_pk_Cid
+            primary key,
+    Cname    nchar(20) not null,
+    Discount float     not null
+)
