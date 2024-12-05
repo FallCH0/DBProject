@@ -33,7 +33,7 @@ create table dbo.Flight
     Arr_t datetime  not null,
     Lea_p nchar(20) not null,
     Arr_p nchar(20) not null,
-    Cid   nchar(20) not null
+    Cid   char(20) not null
 )
 /*创建表Ticket并设置主键*/
 create table dbo.Company
@@ -63,14 +63,14 @@ create table dbo.Crew_Flight
     Cftitle     nchar(20) not null,
     Cflight_id  char(20)  not null
 )
-/*创建表Crew_User并设置主键*/
+/*创建表Staff并设置主键*/
 create table dbo.Staff
 (
     Sid         char(20)  not null
         constraint staff_pk_Sid
             primary key,
     Sname       nchar(20) not null,
-    Sleader_id  nchar(20) not null,
+    Sleader_id  char(20) not null,
     Stitle      nchar(20) not null,
     Sairport_id char(20)  not null
 )
@@ -98,11 +98,53 @@ create table dbo.[Order]
 create table dbo.Fli_Date
 (
     Fid     char(20) not null
-        constraint Fli_Date_pk_Fid
-            primary key,
     Date    datetime not null,
     Fir_Num int      not null,
     Fir_Pri float    not null,
     Eco_Num int      not null,
-    Eco_Pri int      not null
+    Eco_Pri int      not null,
+    alter table dbo.Fli_Date
+    add constraint [Fli_Date_pk_Fid&Date]
+        primary key (Fid, Date)
 )
+/*通过外键构建表之间的约束与联系*/
+/*航班-公司*/
+alter table dbo.Flight
+    add constraint Flight_Company_Cid_fk
+        foreign key (Cid) references dbo.Company
+/*机组人员-航班*/
+alter table dbo.Crew_Flight
+    add constraint Crew_Flight_Flight_Fid_fk
+        foreign key (Cflight_id) references dbo.Flight
+/*机组人员-对应领导*/
+alter table dbo.Crew_Flight
+    add constraint Crew_Flight_Crew_Flight_Cfid_fk
+        foreign key (Cfleader_id) references dbo.Crew_Flight
+/*员工-对应领导*/
+alter table dbo.Staff
+    add constraint Staff_Staff_Sid_fk
+        foreign key (Sleader_id) references dbo.Staff
+/*员工-机场*/
+alter table dbo.Staff
+    add constraint Staff_Airport_Aid_fk
+        foreign key (Sairport_id) references dbo.Airport
+/*会员-公司*/
+alter table dbo.Vip
+    add constraint Vip_Company_Cid_fk
+        foreign key (Cid) references dbo.Company
+/*会员-乘客*/
+alter table dbo.Vip
+    add constraint Vip_User_Uid_fk
+        foreign key (Uid) references dbo.[User]
+/*订单-航班*/
+alter table dbo.Order
+    add constraint Order_Flight_Fid_fk
+        foreign key (Fid) references dbo.Flight
+/*订单-乘客*/
+alter table dbo.Order
+    add constraint Order_User_Uid_fk
+        foreign key (Uid) references dbo.[User]
+/*航班对应*/
+alter table dbo.Fli_Date
+    add constraint Fli_Date_Flight_Fid_fk
+        foreign key (Fid) references dbo.Flight
