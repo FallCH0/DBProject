@@ -41,6 +41,10 @@ alter table dbo.Flight
     alter column Arr_t time not null
 alter table dbo.Flight
     add Add_Day int not null
+alter table dbo.Flight
+alter column Lea_p char(20) not null
+alter table dbo.Flight
+    alter column Arr_p char(20) not null
 /*创建表Ticket并设置主键*/
 create table dbo.Company
 (
@@ -88,6 +92,9 @@ create table dbo.Vip
             primary key,
     Cid char(20) not null
 )
+alter table dbo.Vip
+    add constraint Vip_pk
+        primary key (Uid, Cid)
 /*创建表Order并设置主键*/
 create table dbo.[Order]
 (
@@ -106,7 +113,7 @@ alter table dbo.[Order]
 create table dbo.Fli_Date
 (
     Fid     char(20) not null
-    Date    datetime not null,
+    Date    date     not null,
     Fir_Num int      not null,
     Fir_Pri float    not null,
     Eco_Num int      not null,
@@ -145,9 +152,9 @@ alter table dbo.Vip
     add constraint Vip_User_Uid_fk
         foreign key (Uid) references dbo.[User]
 /*订单-航班*/
-alter table dbo.Order
-    add constraint Order_Flight_Fid_fk
-        foreign key (Fid) references dbo.Flight
+alter table dbo.[Order]
+    add constraint Order_Fli_Date_Fid_Date_fk
+        foreign key (Fid, Date) references dbo.Fli_Date
 /*订单-乘客*/
 alter table dbo.Order
     add constraint Order_User_Uid_fk
@@ -156,6 +163,14 @@ alter table dbo.Order
 alter table dbo.Fli_Date
     add constraint Fli_Date_Flight_Fid_fk
         foreign key (Fid) references dbo.Flight
+/*航班-航班号*/
+alter table dbo.Fli_Date
+    add constraint Fli_Date_Flight_Fid_fk
+        foreign key (Fid) references dbo.Flight
+/*始末站-机场*/
+alter table dbo.Flight
+    add constraint Flight_Airport_Aid_fk
+        foreign key (Lea_p) references dbo.Airport
 /*向各个表中添加数据*/
 INSERT INTO Flight_Management_System.dbo.Airport (Aid, Aname)
 VALUES 
@@ -176,4 +191,35 @@ VALUES
     (N'MF', N'厦门航空公司', 0.72),
     (N'SC', N'山东航空公司', 0.85);
 /**/
+INSERT INTO Flight_Management_System.dbo.Flight (Fid, Lea_t, Arr_t, Lea_p, Arr_p, Cid, Add_Day)
+VALUES
+    (N'001', N'14:38:00.0000000', N'18:42:00.0000000', N'北京大兴国际机场', N'广州白云国际机场', N'PN', 0),
+    (N'002', N'23:41:00.0000000', N'04:26:00.0000000', N'上海虹桥国际机场', N'厦门高崎国际机场', N'SC', 1),
+    (N'003', N'06:27:00.0000000', N'08:40:00.0000000', N'广州白云国际机场', N'秦皇岛北戴河国际机场', N'MU', 0),
+    (N'004', N'17:05:00.0000000', N'22:44:00.0000000', N'厦门高崎国际机场', N'重庆江北国际机场', N'CZ', 0),
+    (N'005', N'20:56:00.0000000', N'02:10:00.0000000', N'重庆江北国际机场', N'香港国际机场', N'PN', 1),
+    (N'006', N'09:07:00.0000000', N'12:13:00.0000000', N'秦皇岛北戴河国际机场', N'上海虹桥国际机场', N'MF', 0),
+    (N'007', N'01:39:00.0000000', N'05:50:00.0000000', N'香港国际机场', N'北京大兴国际机场', N'CA', 0);
+/**/
+INSERT INTO Flight_Management_System.dbo.[User] (Uid, Uname, Height, Sex, Age)
+VALUES
+    (N'001', N'乘客1', 173, N'F', 20),
+    (N'002', N'乘客2', 170, N'M', 50),
+    (N'003', N'乘客3', 175, N'M', 46),
+    (N'004', N'乘客4', 119, N'F', 7),
+    (N'005', N'乘客5', 180, N'F', 17),
+    (N'006', N'乘客6', 145, N'F', 12),
+    (N'007', N'乘客7', 125, N'M', 6),
+    (N'008', N'乘客8', 100, N'M', 4),
+    (N'009', N'乘客9', 173, N'M', 40),
+    (N'010', N'乘客10', 176, N'F', 32),
+    (N'011', N'乘客11', 170, N'F', 59);
+/**/
+INSERT INTO Flight_Management_System.dbo.Vip (Uid, Cid)
+VALUES 
+(N'001', N'CZ'),
+(N'002', N'MU'),
+(N'002', N'SC'),
+(N'003', N'PN');
+
 
