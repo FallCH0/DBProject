@@ -35,6 +35,12 @@ create table dbo.Flight
     Arr_p nchar(20) not null,
     Cid   char(20) not null
 )
+alter table dbo.Flight
+    alter column Lea_t time not null
+alter table dbo.Flight
+    alter column Arr_t time not null
+alter table dbo.Flight
+    add Add_Day int not null
 /*创建表Ticket并设置主键*/
 create table dbo.Company
 (
@@ -94,6 +100,8 @@ create table dbo.[Order]
     Pay   float     not null,
     Grade nchar(20) not null
 )
+alter table dbo.[Order]
+    alter column Date date not null
 /*创建表Fli_Date并设置主键*/
 create table dbo.Fli_Date
 (
@@ -148,3 +156,24 @@ alter table dbo.Order
 alter table dbo.Fli_Date
     add constraint Fli_Date_Flight_Fid_fk
         foreign key (Fid) references dbo.Flight
+/*向各个表中添加数据*/
+INSERT INTO Flight_Management_System.dbo.Airport (Aid, Aname)
+VALUES 
+    (N'001', N'北京大兴国际机场'),
+    (N'002', N'上海虹桥国际机场'),
+    (N'003', N'广州白云国际机场'),
+    (N'004', N'厦门高崎国际机场'),
+    (N'005', N'重庆江北国际机场'),
+    (N'006', N'秦皇岛北戴河国际机场'),
+    (N'008', N'香港国际机场');
+/**/
+INSERT INTO Flight_Management_System.dbo.Company (Cid, Cname, Discount)
+VALUES 
+    (N'CA', N'中国国际航空股份有限公司', 0.88),
+    (N'CZ', N'中国南方航空公司', 0.66),
+    (N'PN', N'西部航空有限责任公司', 0.75),
+    (N'MU', N'东方航空公司', 0.9),
+    (N'MF', N'厦门航空公司', 0.72),
+    (N'SC', N'山东航空公司', 0.85);
+/**/
+
