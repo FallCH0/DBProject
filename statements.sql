@@ -180,7 +180,7 @@ VALUES
     (N'004', N'厦门高崎国际机场'),
     (N'005', N'重庆江北国际机场'),
     (N'006', N'秦皇岛北戴河国际机场'),
-    (N'008', N'香港国际机场');
+    (N'007', N'香港国际机场');
 /**/
 INSERT INTO Flight_Management_System.dbo.Company (Cid, Cname, Discount)
 VALUES 
@@ -221,5 +221,23 @@ VALUES
 (N'002', N'MU'),
 (N'002', N'SC'),
 (N'003', N'PN');
-
+/**/
+INSERT INTO Flight_Management_System.dbo.Staff (Sid, Sname, Sleader_id, Stitle, Sairport_id)
+VALUES 
+(N'001', N'员工1', N'001', N'职位1', N'001'),
+(N'002', N'员工2', N'001', N'职位2', N'001'),
+(N'003', N'员工3', N'003', N'职位1', N'002'),
+(N'004', N'员工4', N'004', N'职位1', N'003'),
+(N'005', N'员工5', N'005', N'职位3', N'004'),
+(N'006', N'员工6', N'006', N'职位1', N'005'),
+(N'007', N'员工7', N'006', N'职位4', N'005'),
+(N'008', N'员工8', N'008', N'职位1', N'006'),
+(N'009', N'员工9', N'009', N'职位5', N'007');
+/**/
+INSERT INTO Flight_Management_System.dbo.Fli_Date (Fid, Date, Fir_Num, Fir_Pri, Eco_Num, Eco_Pri)
+VALUES 
+    (N'001', N'2024-12-20', 1, 1000, 0, 800),
+    (N'002', N'2024-12-10', 1, 800, 1, 700),
+    (N'002', N'2024-12-28', 0, 900, 1, 800),
+    (N'003', N'2024-12-12', 0, 700, 0, 500);
 
