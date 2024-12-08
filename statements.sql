@@ -31,8 +31,8 @@ create table dbo.Flight
             primary key,
     Lea_t datetime  not null,
     Arr_t datetime  not null,
-    Lea_p nchar(20) not null,
-    Arr_p nchar(20) not null,
+    Lea_p char(20) not null,
+    Arr_p char(20) not null,
     Cid   char(20) not null
 )
 alter table dbo.Flight
