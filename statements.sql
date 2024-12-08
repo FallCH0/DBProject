@@ -185,11 +185,11 @@ VALUES
 INSERT INTO Flight_Management_System.dbo.Company (Cid, Cname, Discount)
 VALUES 
     (N'CA', N'中国国际航空股份有限公司', 0.88),
-    (N'CZ', N'中国南方航空公司', 0.66),
+    (N'CZ', N'中国南方航空集团有限公司', 0.66),
     (N'PN', N'西部航空有限责任公司', 0.75),
-    (N'MU', N'东方航空公司', 0.9),
-    (N'MF', N'厦门航空公司', 0.72),
-    (N'SC', N'山东航空公司', 0.85);
+    (N'MU', N'中国东方航空集团有限公司', 0.9),
+    (N'MF', N'厦门航空有限公司', 0.72),
+    (N'SC', N'山东航空股份有限公司', 0.85);
 /**/
 INSERT INTO Flight_Management_System.dbo.Flight (Fid, Lea_t, Arr_t, Lea_p, Arr_p, Cid, Add_Day)
 VALUES
