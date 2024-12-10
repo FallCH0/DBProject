@@ -394,3 +394,55 @@ WHERE Sname = '钱强';
 ALTER TABLE Company
 ADD CONSTRAINT discount_c
 CHECK (Discount BETWEEN 0 AND 1);
+/*1.查询2024/12/11到达秦皇岛的人员的uid与姓名*/
+SELECT DISTINCT [User].[Uid] AS '编号',Uname AS '姓名'
+FROM [User]
+WHERE [User].[Uid] IN (SELECT [Uid]
+					   FROM [Order]
+					   WHERE Date = '2024-12-11' AND Fid in (SELECT Fid
+															 FROM Flight
+															 WHERE Arr_p IN (SELECT Aid
+																			 FROM Airport
+																			 WHERE Aname LIKE '秦皇岛%')));
+/*2.查找满足从北京到广州的航班的机长的工号，姓名及其公司*/
+SELECT Cfid AS '工号',Cfname AS '姓名',Cname AS '公司'
+FROM Crew_Flight,Company,(SELECT Fid,Cid
+						  FROM Flight
+						  WHERE Arr_p IN (SELECT Aid
+										  FROM Airport
+										  WHERE Aname LIKE '广州%')
+							    AND Lea_p IN (SELECT Aid
+											  FROM Airport
+											  WHERE Aname LIKE '北京%')) AS FC(F,C)
+WHERE Cftitle =  '机长' AND Cflight_id = F AND Cid = C;
+/*3.查找近期满足从上海去厦门的航班的航班号，日期对应的经济舱数量以及余票*/
+SELECT Fid AS '航班号',Date AS '日期',Eco_num AS '经济舱余票',Eco_pri AS '票价',Cname AS '航司'
+FROM Fli_Date,Company,(SELECT Fid,Cid
+						  FROM Flight
+						  WHERE Arr_p IN (SELECT Aid
+										  FROM Airport
+										  WHERE Aname LIKE '厦门%')
+							    AND Lea_p IN (SELECT Aid
+											  FROM Airport
+											  WHERE Aname LIKE '上海%')) AS FC(F,C)
+WHERE Cid = C AND Fid = F;
+/*4.李强想在2024/12/10从重庆到香港，想坐头等舱，查询符合条件的航班号，所属航司，原票价，实付金额*/
+SELECT Fid AS '航班号',Cname AS '航司',Fir_Pri AS '原价',(Fir_Pri * COALESCE((SELECT Discount 
+																			  FROM Company 
+																			  WHERE Cid = C AND Cid IN (SELECT Cid
+																										FROM Vip
+																								WHERE [User].[Uid]=Vip.[Uid])),1 )) AS '实付金额'
+FROM [User],Fli_Date,Company,(SELECT Fid,Cid
+						  FROM Flight
+						  WHERE Arr_p IN (SELECT Aid
+										  FROM Airport
+										  WHERE Aname LIKE '香港%')
+							    AND Lea_p IN (SELECT Aid
+											  FROM Airport
+											  WHERE Aname LIKE '重庆%')) AS FC(F,C)
+WHERE [Uname]='李强' AND Date = '2024-12-10' AND Company.Cid = C AND Fid = F ;
+/*5.显示郑静近期的出行计划表，要求输出日期，航班号，出发地，目的地（按日期升序排列）*/
+SELECT Date AS '日期',Flight.Fid AS '航班号',A.Aname AS '出发地',B.Aname AS '目的地'
+FROM [Order],[User],Flight INNER JOIN Airport A ON A.Aid = Lea_p INNER JOIN Airport B ON B.Aid = Arr_p
+WHERE Uname='郑静' AND [Order].[Uid] = [User].[Uid] AND [Order].Fid = Flight.Fid
+ORDER BY Date;
